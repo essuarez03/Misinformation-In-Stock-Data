@@ -1,0 +1,353 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{authblk}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+
+
+\title{Analysis of Misinformation in Stock Data between 2015-2025}
+
+\author{Gerardo Carrera}
+\author{Maanas Lalwani}
+\author{Garrett Power}
+\author{Ezekiel Suarez}
+
+\affil{Arizona State University, Tempe, AZ 85281, USA}
+
+\begin{document}
+
+\maketitle
+\setlength{\parindent}{0cm}
+
+\section{Abstract}
+
+The increase in misinformation that coincides with our continued expansion into a digital age poses significant risk to any potential investors that use digital media to make financial decisions. This project aims to investigate how misinformation in the media may have impacted stock market behavior for the S\&P500. Some real-world events are highlighted such as the significance of COVID-19’s impact on an especially volatile year for the market in 2020, along with the 2021 surge in GameStop valuation and a fake White House tweet from 2023. Through this analysis, we hope to examine how misinformation during these stock market events could spur volatile events such as market disruptions, anomalies, or investor overreactions. Machine learning models and natural language processing (NLP) are leveraged with sentiment analysis. Specifically, we utilize transformer-based methods such as the BERT language model to classify content associated with stock market events (2015-2025) as misinformation or legitimate information. We web scraped as much data as we could at the time resulting in a dataset of around 2,200 records that combined both stock market events, media information, and any additional calculated financial metrics or label given by our misinformation or sentiment classification. Our findings do reinforce some insights, such as how misinformation seems to be present during many volatile stock market events. We also detail challenges to our current methodology that were presented to us during our process, such as our focus on the most volatile market events causing any analysis between volatility and the uniformly distributed misinformation classes to be moot. Challenges remain but seem to be unsurprising, future research utilizing methods such as transformer-based models will definitely be able to capture more nuanced implications and meaningful results.
+
+\section{Introduction \& Background}
+
+\subsection{Introduction}
+
+Misinformation can be described as the distribution of falsified information with the intent to deceive. Misinformation has played a crucial role in shaping financial markets, influencing investor sentiment, market volatility, and stock valuation. While the spread of misinformation has been utilized throughout history, seen as early as Octavian’s propaganda campaign against Mark Antony around 44 BC \cite{source28}, its rapid proliferation through digital media in the 21st century has heightened concerns about its impact on financial stability. Notable research indicates that misinformation does contribute to stock market volatility, especially during periods of uncertainty such as economic crises or during major global events like COVID-19 \cite{source16, source19, source24}. Misinformation has also played a role in stock market anomalies, with financial narratives fabricated purely to mislead traders, driving speculative bubbles and panic sell-offs \cite{source17, source23}. Some research has demonstrated that misinformation-driven trading has led to market deficiency and potential mispricing.\cite{source20, source27}. This digital era’s increased reliance on social media and online news as primary sources for financial information has made financial markets much more susceptible to these misleading narratives, further amplifying the effects of misinformation \cite{source18, source22, source27}.
+\\\\
+A consistent finding amongst researchers is that misinformation affects both market behavior and investor sentiment. Several analyses have suggested that misinformation influences not only short-term stock price fluctuations, but also a broader risk exposure \cite{source16, source24, source29}. Additionally, misinformation has been found to be more influential in developed markets, where investor reactions to false narratives are stronger due to the speed at which information spreads \cite{source29, source30}. Some recent studies also emphasize that misinformation's influence is not solely tied to fake news headlines, but also to a broader landscape of unverified financial information. Integrating reliable news sources can sometimes mitigate these effects of misinformation, but a key challenge remains in distinguishing credible information from the deceptive content \cite{source19, source28, source30}. This persistent challenge by misinformation highlights the need for improved detection and mitigation strategies in order to protect the populace and stock market integrity.
+
+\subsection{Background}
+
+The stock market has always been influenced by sentiment-driven movements, but even more so as investing becomes more accessible. Social media and news articles have been falsely leading these new investors into bad decisions, especially over the last decade. Fake news and social media manipulation has been shown to affect markets in greater ways than legitimate earnings reports or trends. These distort prices, momentarily leading to sharp rises and falls. For example, the SEC had a crackdown in 2017 on Lidingo Holdings, a company that was paid more than \$1 million over the course of 2011-2014 to write hundreds of fake news articles. People would buy thousands of shares of a stock before paying for the release of the article and then sell the stocks the following day for a large profit \cite{source1}. Emotionally charged headlines of stock-related articles tend to be misleading, which emphasizes the need for misinformation detection to improve sentiment-based stock market prediction models \cite{source2, source1, source3}. 
+\\\\
+Machine learning and sentiment analysis are not new concepts in the world of finance; models have been made to filter out misleading news before. In 2017, at University of Alberta, Canada, Dr. Golmohammadi and Dr. Zaiane built an anomaly detection framework using Twitter data to help remove 28\% false positives in the detection of stock market manipulation \cite{source4}. Stocks with a presence on social media have been found to have stronger movements and are more susceptible to misinformation-driven market activity \cite{source5}. Having a model that fact-checks and recognizes linguistic patterns can improve reliability of stock prediction models.
+\\\\
+The cryptocurrency market, which is particularly volatile and misinformation-driven, has been the focus of several studies on fraud. "Pump-and-dump" schemes have been driven by online forums such as Reddit's WallStreetBets (WSB). These are cases where a large group of people buy up a cheap stock and proceed to sell once the stock is artificially inflated. These sudden price spikes make some people rich, but usually the sharp crashes that follow affect more people. A substantial example of WSB utilizing sentiment manipulation occurred in 2021, when the group bought up a large amount of a dying GameStop (ticker: GME) stock and cost those on Wall Street who had shorted the stock billions \cite{source8, source7}. Real-time filtering of misinformation could prevent dramatic movements, therefore researchers have started using innovative neural network models to detect these pump-and-dump schemes \cite{source6}.
+\\\\
+Natural Language Processing (NLP) is a critical part of misinformation detection. Filtering out misleading Twitter sentiment and using Granger causality tests improves predictive accuracy \cite{source9}. Khedr et al. brought their model accuracy from 73\% to 86\% using naïve Bayes algorithm and after combining this sentiment analysis with historical stock prices, the accuracy rose to nearly 90\% \cite{source10}. If done correctly and optimally, an extremely accurate stock market prediction model can be built.
+\\\\
+However, to build an accurate stock market prediction label, we must first understand how misinformation started and its origins.  Misinformation has been around since the dawn of man, but only recently started to become a widespread issue due to its ability to spread rapidly and easily in the digital age. \cite {source11, source12} Misinformation has become a global challenge in recent years and many equate it to the same level as climate change. \cite {source13} It’s also important to consider how the issue of misinformation is evolving. During 2016, misinformation mainly consisted of false stories and conspiracy theories that spread easily because algorithms distribute content to a wide audience. \cite{source14} Today the issue is far more complex, with many seeing the rise of more difficult-to-discern misinformation using tools such as deep fakes, digital forgery, or modifying the video and audio of real events to fit a certain narrative. \cite{source11} 
+\\\\
+The rise in misinformation appears to have occurred in the midst of the 2016 US election. \cite{source11,source13,source14,source15} In the months leading up to the election, between June and the day of the election, up to 500,000 articles of misinformation were published. \cite{source15} After 2016, interest in fake news increased to a level never seen before and led to misinformation becoming more popular than actual news. \cite{source15} An example of this was seen when the top 20 fake news stories generated more Facebook engagement than the top 20 election stories from major news outlets. \cite{source11} It is believed that the main reason for this proliferation of misinformation is simply the demand for it. \cite{source15} Consumers were looking for other ways to receive their news that was more engaging and compelling, and those who created misinformation did just that. Producers of misinformation often create misinformation to maximize engagement, which in turn increases advertising revenue. \cite{source15}
+\\\\
+This increased attention to misinformation led to many asking the question of whether it affected market volatility. One of the first studies to answer this question was conducted immediately after the 2016 US election. It found that fake news had a constant negative impact on market volatility. \cite{source32} To be more specific, the results showed that on the days when disinformation was most widely shared in favor of Hillary Clinton, the market variance decreased significantly. \cite{source32} It is suggested that this was due to confirmation bias as Hillary was expected to win, therefore this fake news only further confirmed that assertion. \cite{source32} It should be noted however that the study acknowledges that its findings are a modest first step in this area and the question of how disinformation affects market volatility is not resolved yet.
+\\\\
+Since this first study, many more studies have been conducted and they have found a lot of evidence pointing to the contrary. A study conducted in 2024 states that in instances where misinformation crosses into the realm of business and finance, it can lead to the loss of billions in seconds. \cite{source31} This was demonstrated particularly in 2013 when a fake tweet about an explosion in the White House led to a \$130 billion loss in a matter of seconds.\cite{source33, source34} Investors can also superficially increase market share due to misinformation as in 2014 when Cynk Technology Corp's stock price increased 36000\% over a few weeks due to fake discussions from bots.\cite{source34} It appears that misinformation does play a part in market volatility, but particularly in the short term as once the information is proved incorrect, markets stabilize. \cite{source31} However, a difference in how long it takes for stock to stabilize depends on whether misinformation was negative or positive. Negative responses faded in a week while positive responses faded in a day. \cite{source31} Despite misinformation generally only having a temporary effect on the stock market, many are still ringing the alarm bells as any misinformation can lead to conflicting opinions among investors. \cite{source31, source35} Over time, this can lead to a loss of trust in companies and increase market volatility. \cite{source31, source35} This is a large issue as once investors begin to make decisions based on information that may or may not be true \cite{source31}, much of our current methods of understanding the stock market such as sentiment analysis may perform worse. We could also lose the ability to make accurate market predictions. 
+\\\\
+The stock market has always been influenced by sentiment-driven movements, but even more so as investing more accessible. The rise of social bots further complicates the spread of misinformation \cite{source40}, and these distorted prices momentarily lead to sharp rises and falls. The SEC had a crackdown in 2017 on Lidingo Holdings, a company that was paid more than \$1 million over the course of 2011-14 to write hundreds of fake news articles. People would buy thousands of shares of a stock before paying for the release of the article and then sell the stocks the following day for a large profit. Emotionally charged headlines of stock-related articles tend to be misleading, which emphasizes the need for misinformation detection to improve sentiment-based stock market prediction models. The ability to use and identify whether the information is useful is a key asset for building an accurate view. Antweiler and Frank \cite{source36} explore the complexities.
+\\\\
+Machine learning and sentiment analysis are not new concepts in the world of finance; models have been made to filter out misleading news before. It is shown that by using the right amount of information with the right signals, stock market activity and financial gains improve. This in turn impacts reliability of stock prediction models. Understanding investor psychology is key to understanding these market shifts \cite{source41}.
+\\\\
+The cryptocurrency market, which is particularly volatile and misinformation-driven, has been the focus of several studies on fraud. The behavorial aspects of financial decision-making, as described by Barberis and Thaler \cite{source42}, highlight how cognitive biases and emotional factors can lead investors to make suboptimal choices. Moreover, during recessions, the effects are even more dramatic. As identified by Garcia \cite{source43} during economic recessions, this shows how negative information can affect financial markets.
+\\\\
+To build an accurate stock market prediction label, we must first understand how misinformation started and its origins. Del Vicario et al. \cite{source37} shows that misinformation is easily spread which leads consumers needing to find new ways of filtering for good news. A large reason that these behaviors occur is due to consumers and their own expectations. There is often confirmation bias which leads them to pursue this data. Narrative economics is a major driver in this economic sector, as noted by Shiller \cite{source39}.
+\\\\
+This increased attention to misinformation led to many asking the question of whether it affected market volatility. It should be noted however that the study acknowledges that its findings are a modest first step in this area and the question of how disinformation affects market volatility is not resolved yet. The information can also be skewed to have a negative impact, which highlights why investors need to be careful, particularly due to sentiment in these markets \cite{source45}. Lazer et al. \cite{source44} shows the effects of misinformation and fake news. Moreover, behavioral traits that many have show that the spread of misinformation has a negative effect on the overall population and their investments.
+\\\\
+Overall, the dynamics between the narratives and information drives market volatility, further reinforcing the need to study these dynamics. It is important that individuals do their own research and avoid "Thinking, Fast and Slow", instead try to be calculated with your decisions \cite{source38}. 
+
+\subsection{Methodologies from Literature}
+Machine learning models have been widely used in misinformation research and remain the most effective tools, aiming to improve accuracy and robustness for identifying misleading financial narratives. Natural Language Processing (NLP) techniques, including processes such as sentiment analysis and topic modeling, have been applied to analysis on financial news and social media discussions in order to assess their impact on stock markets \cite{source21, source26, source30}. More advanced models, such as BERT (Bidirectional Encoder Representations from Transformers) and other transformer-based architectures, have been employed to effectively categorize unstructured text and extract reliability-weighted information, thus helping quantify the severity and extent of misinformation within financial discourse \cite{source30}. 
+\\\\
+One of the key challenges in misinformation detection is the difficulty of accurately quantifying and verifying misleading content. There is a lack of standardized metrics, and the asymmetric nature of misinformation complicates this evaluation on its impact within financial market dynamics \cite{source28, source30}. The continued development of structured misinformation detection frameworks has attempted to address this issue by transforming financial text into structured, comparable datasets for analysis \cite{source30}. However, research suggests that misinformation remains a persistent problem, especially during major corporate events (CE’s), where deceptive financial narratives can significantly influence investor behavior \cite{source30}. Recent financial misinformation events in the U.S. underscore this necessity for more robust detection frameworks. There remains limitations in detecting nuanced misinformation, particularly when fabricated content is mixed with partial truths or biased reporting \cite{source26, source28}. 
+\\\\
+During the COVID-19 pandemic, misinformation was linked to extreme market reactions, with misleading narratives affecting financial stability across multiple market sectors \cite{source29, source30}. There is strong evidence linking misinformation sentiment to both common and extreme market behavior, with studies demonstrating that increased misinformation-related sentiment corresponds to higher market volatility and lower returns \cite{source23}. Similarly, misinformation has played a disruptive role during major political events and corporate financial scandals, where investor sentiment was manipulated through unreliable financial reporting \cite{source30}. The challenge of misinformation is further complicated by its extensive impact on investor attention, trading volume, and stock volatility, demonstrating the need for better mitigation strategies \cite{source25, source30}.
+\\\\
+While existing methodologies have improved misinformation classification, there is still a need for more comprehensive research on advanced machine learning models effectiveness, particularly in better distinguishing between illusory narratives and legitimate financial insight. Future research should involve leveraging deep-learning architectures to develop more precise misinformation detection models, possibly incorporating alternative data sources, to improve the credibility judgement of financial information \cite{source30}. Additionally, these more sophisticated deep-learning architectures could enhance misinformation detection accuracy, while providing financial markets with more reliable mechanisms for identifying and then countering these misleading narratives \cite{source30}.
+
+
+\subsection{Project Plan}
+
+The rise of digital platforms has amplified the spread of misinformation, significantly impacting stock market behavior. Investors and trading algorithms rely on financial news and sentiment analysis, but deceptive information can distort predictions and drive market anomalies. This research explores how misinformation influences stock volatility, challenges sentiment analysis, and whether its detection can enhance stock market prediction models. By integrating misinformation detection methods, we aim to improve the reliability of financial forecasts and help investors make more informed decisions.
+
+
+\section{Methods}
+
+
+
+\subsection{Data Sources, Preparation and Cleaning}
+Our dataset that we used for this analysis on stock market volatility and misinformation was collected using the Yahoo! Finance Python API called yfinance \cite{yahoofinance2025}. The stock data included in this library contains everything from historical market data to corporate actions, financial statements, and earnings. We gathered the top 25 percent most volatile stock records from the S\&P500 over the last 10 years (2015-2025). We then extracted a 30-day window of daily market pricing data for each record of volatility and made sure to avoid overlapping of these event windows.
+\\\\
+What was originally around 1.2 million records in our dataset of complete historical stock data, was then reduced to about 303,359 records after the top 25 percent most volatile were selected. The data we gathered at this point were 30-day windows of a stock’s event date, open price, high and low, close price, volume, returns, volatility and a separate EWMA calculation, the stock ticker, and their respective stock name. After collecting the data, we conducted simple descriptive statistics and other EDA, looking for extreme values or things harmful to any analysis such as nulls.
+\\\\
+We used a 30-day rolling standard deviation of daily returns to measure volatility and obtain a smooth measure of short-term fluctuations in the market. Using our method of n=30 days for the stock event window gave us a lower overall maximum volatility value found throughout the dataset but is indicative of a higher daily average during that event’s time period. \\
+
+Daily returns:
+\[
+r_t = \frac{P_t - P_{t-1}}{P_{t-1}}
+\]
+\\
+
+The 30-day rolling standard deviation of the daily returns above is:
+\[
+\text{Volatility}_t = \sqrt{\frac{1}{30} \sum_{i=t-29}^{t} (r_i - \bar{r})^2}
+\]
+An additional filtering approach was used to ensure that consecutive highly-volatile windows were separated by these n-day windows to preserve independent events for observation in our analysis.
+\\\\
+We believe this dataset provides us an approach with decent structure for the ability to study market instability and potential influence of misinformation and the effects of such influence. We want to look at the more volatile events we’ve collected in our dataset and see how misinformation could have been involved in that event. We then employed BeautifulSoup in order to web scrape headlines and short snippets of text found to be potentially related to a stock market event found in our historical stock data. An issue with the robots.txt file of some web sources denying automated crawling made it difficult for us to get much news or media data at all initially. We then switched to using search engines (such as Bing!) for web scraping and obtained a smaller amount of records of this media information, about 2200 records. We will continue with our analysis later in this Methods section, aiming to use classification models and predictive modeling to investigate misinformation and it's impact on stock market behavior. 
+
+\begin{figure}[H]
+\centering
+\subfloat[Info of our Data frame about Stock Market Volatility.\label{fig:1a}]{\includegraphics[width=0.5\textwidth, ]{Fig/data_info.png}}\hfill
+\subfloat[Head of our dataset \label{fig:1b}] {\includegraphics[width=1\textwidth]{Fig/data_head.png}}\hfill
+\subfloat[Statistics surrounding our Dataset. \label{fig:1c}]{\includegraphics[width=1\textwidth]{Fig/data_describe.png}}
+\caption{Example of our dataset: filtered and named stock data From \cite{YfinanceData}} \label{fig:1}
+\end{figure}
+
+\subsection{Descriptive and Inferential Statistics}
+In the world of stock markets, both descriptive and inferential statistics are used consistently in order to analyze and predict stock market behavior. In our project, descriptive statistics are being used to help us determine stocks that are experiencing extreme volatility. These stocks would most likely differ from the average of the dataset or the company itself and therefore would be good to research. Inferential statistics would then be used to forecast future trends or determine whether market volatility would continue into the future. It's these kinds of statistics that would be crucial to help us understand exactly how misinformation affects market volatility and whether those jumps have impacts on the future.
+\\\\
+To further investigate the relationship between misinformation and stock market volatility, we employed advanced statistical techniques such as correlation analysis and hypothesis testing. By analyzing the correlation between news sentiment (derived from scraped articles) and stock price movements, we aimed to quantify the impact of misinformation on market behavior. Preliminary findings indicate a strong association between negative news sentiment and sharp declines in stock prices, suggesting that misinformation may exacerbate market instability. Additionally, we conducted hypothesis testing using a t-test to compare the volatility of stocks during periods with and without misinformation, providing insights into whether misinformation directly causes increased volatility. These analyses, supported by Python libraries such as SciPy, offer a robust framework for understanding the dynamics of misinformation in financial markets and its potential long-term effects on investor behavior and market trends.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth,height=0.6\linewidth]{Fig/Boeing Volume.png}
+    \caption{Boeing Volume Amount with Linear Regression}
+    \label{fig:Volume_BA}
+\end{figure}
+
+Figure \ref{fig:Volume_BA} is a great example showcasing how we are planning to use both inferential and descriptive statistics in our project. We first need to understand the statistics surrounding the stock market and this is done by plotting and understanding current numbers. From here we can then use inferential statistics such as the Linear regression line in this plot to determine how for example this volume amount would change in the future.
+
+\subsection{BERT Misinformation Classification}
+
+Using the data gathered from a Kaggle dataset that shows article titles and their "Real" or "Fake" classifications, a TF-IDF (Term Frequency-Inverse Document Frequency) measure will give an evaluation of importance to each word used. Then, with Logistic Regression, a supervised learning model will be built to calculate whether an article is real or fake based on its name. After the model is built, the confusion matrix in figure \ref{fig:confusion} shows its 99\% evaluation success rate.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\linewidth,height=0.6\linewidth]{Fig/confusion_matrix.png}
+    \caption{Confusion Matrix}
+    \label{fig:confusion}
+\end{figure}
+
+With this supervised learning model, the BERT model's web scraped articles will be classified. Figure \ref{fig:sample} shows a sample of the results and figure \ref{fig:fvr} shows the quantity of fake vs real articles that were web scraped.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth,height=0.4\linewidth]{Fig/Sample.png}
+    \caption{Web Scraped Articles Classified}
+    \label{fig:sample}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth,height=0.6\linewidth]{Fig/fake_vs_real.png}
+    \caption{Classification Bar Plot}
+    \label{fig:fvr}
+\end{figure}
+
+\section{Results}
+
+\subsection{Analysis of Misinformation and It's Prevalence in Volatile Stock Market Events}
+
+The final dataset that we compiled for analysis consisted of around 2000 records, each corresponding to a volatile stock market event from S\&P500 companies over the last 10 years. We collected up to 10 media posts found by web scraping the Microsoft Bing engine during the dates for these most volatile market events. One thing in particular we looked at, utilizing the misinformation label obtained by our BERT classification model, was the distribution of classifications across this data. The results are shown below in figure \ref{fig:Occur1}. From these initial 10 results, we can determine that misinformation could be playing a role in high market volatility as in some cases they make up as much as 80\% of articles on any given day. In order to understand further we plot other metrics surrounding how often it occurs. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/OccurenceOf.png}
+    \caption{Number of Occurrences of Real articles and Fake articles for top 10 companies}
+    \label{fig:Occur1}
+\end{figure}
+
+A more detailed plot examining the percentage is shown below. It demonstrates that based on the roughly 330 High market volatility events, on average 44\% of articles posted on those days were classified as misinformation. This is shown in figure \ref{fig:Percent1}. Now it's important to consider that this percentage is based on the Bert Model classification which is not guaranteed to be 100\% correct. It's one of the challenges we discuss further in the document as it's difficult to classify such a large number of articles and find what is true and not true. Despite this, based on these initial results, I believe it is telling of how misinformation could be playing a role at least moderately as in some cases, shareholders could be making their decisions on faulty information. 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/Boxplot(Percentage).png}
+    \caption{Misinformation Percentage of all events}
+    \label{fig:Percent1}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/BoxPlot(Occurence).png}
+    \caption{Misinformation Percentage of all events}
+    \label{fig:occur2}
+\end{figure}
+
+Another example of the distribution of how common real articles occurred in combination with fake articles is demonstrated in above in figure \ref{fig:occur2}. In this figure, the data is grouped by ticker and date and we aim to understand further the spread of each type of article. Based on the results, We can see that real articles do appear to be more common as opposed to fake articles which makes sense based on our previous percentage. It's also shown however the spread of fake articles is wider than real with the outliers. In the dataset, there was also some cases where fake articles completely overshadow real articles which could be representative of sudden jumps of misinformation which occur such as the White House Explosion of 2013 which led to a loss of \$130 Billion in a matter of seconds. \cite{source33, source34} Events like these could be the cause of those outliers as they often occur when a large number of misinformation is posted at the same time. 
+
+\subsection{Further Analysis and Addition of Sentiment}
+
+Roughly half of the records of our final dataset were labelled as being potentially related to misinformation during each stock event. A simple t-test compared our stock volatility column across this dataset for both misinformation label classes (1 or 0) and the results suggest no statistical significance between volatility for either class of real or fake news, with a p-value of about 0.19. 
+\\\\
+We then decided to add a feature containing the sentiment (Negative, Neutral, Positive) for each of these records in this final dataset.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/VolBySentimentAndLabel.png}
+    \caption{Volatility by Sentiment and Misinformation}
+    \label{fig:sent1}
+\end{figure}
+
+Visualizing the distribution of sentiment across our records, along with volatility and the misinformation label, allows us to highlight a key obstacle for our current methodology. The range in volatility values across the final dataset was quite thin for both misinformation classes.
+\\\\
+And also, all three classes of sentiment. How about the distribution of those classes?
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/DistofSentiment.png}
+    \caption{Distribution of Sentiment}
+    \label{fig:sent2}
+\end{figure}
+
+As you can see, about three-quarters of our final dataset contained a sentiment label of ‘Negative’ for that record. Almost no positive sentiment was found during these volatile stock market events for nearly all S\&P500 companies over the last 10 years, and nearly all of our final records are extracted from the year 2020 (COVID having been characterized as a time having an influx of misinformation).
+
+\subsection{Logistic Regression Analysis With TF-IDF on Snippet Text}
+
+To classify whether a financial news article was real or fake, we trained a logistic regression model using TF-IDF features extracted from the article snippets. We used a vocabulary of the top 500 most informative words and mapped the labels as binary values: Real = 0 and Fake = 1. The dataset was split into training and testing sets using an 80/20 ratio, and the model was trained with default hyperparameters and a maximum of 1000 iterations. 
+\\\\
+As shown in Figure \ref{fig:log_table}, the model achieved an overall accuracy of 83.3\%, with a precision of 0.86 and recall of 0.78 for fake news, and a precision of 0.81 and recall of 0.88 for real news. The corresponding F1 scores were 0.82 and 0.85 for fake and real news respectively. These results suggest that the model performed well across both classes, slightly favoring correct identification of real news due to its higher recall.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/logreg_table.png}
+    \caption{Performance metrics for Logistic Regression model (TF-IDF)}
+    \label{fig:log_table}
+\end{figure}
+
+Figure \ref{fig:log_confusion} shows the confusion matrix for the classifier. We observe that most real news articles were correctly predicted (207 out of 233), and the model also successfully identified a majority of fake articles (168 out of 215). The false positive and false negative rates were relatively balanced, indicating the model’s robustness in distinguishing between real and fake news from snippets alone.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/Conf_Matrix_Logreg.png}
+    \caption{Confusion Matrix – Logistic Regression using TF-IDF features}
+    \label{fig:log_confusion}
+\end{figure}
+
+These results demonstrate that even simple, interpretable models based on textual features can reliably detect financial misinformation. This supports existing literature on the use of linguistic cues—particularly emotional or urgent phrasing—as indicators of deceptive news content. However, since the model relies solely on short snippets, there are ethical considerations around misclassifying satirical or context-sensitive material. Without full article context, such models might inadvertently flag legitimate journalism as fake, potentially impacting reputations and decisions in high-stakes financial settings.
+
+\subsection{Random Forest Classification Using Structured Financial Features}
+
+To evaluate whether stock behavior alone can reliably predict whether a news article is misinformation, we trained a Random Forest classifier using only structured financial features: Return, Volatility, EWMA Volatility, and Volume. The dataset was split into training and testing sets in an 80/20 ratio, and the model was configured with 100 estimators. 
+\\\\
+As shown in Figure \ref{fig:rf_metrics}, the model achieved an overall accuracy of 53.6\%. The recall for real news was moderately better at 0.61, while fake news recall lagged at 0.45. Precision and F1 scores were also lower, with a nearly balanced but weak classification across both classes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/rf_metrics.png}
+    \caption{Performance metrics for Random Forest model (structured features)}
+    \label{fig:rf_metrics}
+\end{figure}
+
+The confusion matrix in Figure \ref{fig:rf_confmatrix} provides a clearer view of the model’s performance. While the model correctly classified 143 real news samples, it also misclassified 90 real articles as fake and 118 fake articles as real. This imbalance reflects the model’s limited capacity to distinguish between the two categories using only numerical signals.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/rf_confmatrix.png}
+    \caption{Confusion Matrix – Random Forest using structured financial features}
+    \label{fig:rf_confmatrix}
+\end{figure}
+
+Figure \ref{fig:rf_importance} shows the relative importance of each feature. Volatility and EWMA Volatility emerged as the most influential variables, followed by Return and Volume. This aligns with existing hypotheses that misinformation may become more prevalent or more impactful during periods of heightened market turbulence.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/rf_importance.png}
+    \caption{Feature Importance – Random Forest (Return, Volatility, Volume)}
+    \label{fig:rf_importance}
+\end{figure}
+
+Despite identifying some useful signals, the model’s performance overall was close to random. These findings reinforce the notion from previous research that while stock data may reflect responses to misinformation, it lacks the contextual depth to detect misinformation without accompanying text analysis. Additionally, relying solely on stock price fluctuations risks misclassifying valid market reactions to legitimate news as deceptive, which poses ethical concerns in high-stakes financial environments.
+
+\subsection{Gradient Boosting for Volatility Class Prediction}
+
+To assess whether volatility levels can be effectively predicted using a combination of financial indicators, misinformation presence, and sentiment cues, we developed a \textbf{Gradient Boosting Classifier} targeting a three-class volatility label. The target variable, \texttt{Volatility\_Class}, was derived via quantile binning and classified each record as \textit{Low}, \textit{Medium}, or \textit{High} volatility. Input features included market metrics such as \texttt{Return}, \texttt{Volatility}, \texttt{EWMA\_Volatility}, and \texttt{Volume}, in addition to a binary label indicating whether the associated news was classified as fake (1) or real (0), and a sentiment score approximated from return polarity.
+\\\\
+As shown in Figure \ref{fig:gbm_metrics}, the model achieved a perfect score across all three classes. Precision, recall, and F1-score were each 1.00 for Low, Medium, and High volatility classifications, and the overall accuracy was also 100\%. At face value, these results suggest that our feature set can perfectly differentiate between the volatility categories.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/gbm_metrics.png}
+    \caption{Performance metrics for Gradient Boosting model (Volatility Class Prediction)}
+    \label{fig:gbm_metrics}
+\end{figure}
+
+Figure \ref{fig:gbm_conf_matrix} displays the confusion matrix for the model. Every instance in the test set was correctly classified into its respective volatility group with no misclassifications. While this may appear impressive, it raises concerns about overfitting or potential leakage in the feature-label pipeline.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/gbm_conf_matrix.png}
+    \caption{Confusion Matrix – Gradient Boosting model predicting volatility class}
+    \label{fig:gbm_conf_matrix}
+\end{figure}
+
+This unusually high performance is likely the result of one or more factors: (1) strong correlation between volatility and EWMA volatility metrics; (2) label leakage, where features used for prediction may inherently contain signals used to construct the target; and (3) the use of quantile-based binning, which may have caused the model to exploit clear numeric thresholds.
+\\\\
+Despite these concerns, the result demonstrates that incorporating external signals such as sentiment and misinformation classifications can enhance volatility modeling, particularly when combined with core market features. Prior research has linked misinformation and negative sentiment to increased short-term volatility, and our findings reinforce this trend in a controlled experimental setting.
+\\\\
+That said, ethical and methodological caution is required. A model exhibiting perfect prediction may create a false sense of certainty in practical applications such as algorithmic trading or portfolio risk analysis. If deployed without sufficient validation, such models could lead to overreactions to minor signals and contribute to volatility amplification. Therefore, robust cross-validation and out-of-sample testing are crucial before considering real-world integration.
+
+
+\section{Discussion / Implications}
+\subsection{Discussion: TF-IDF vs BERT Classification: How Much More Advanced Can BERT be?}
+Initially, the plan for this project was to classify misinformation using a BERT or finBERT model. Before attempting the use of BERT (Bidirectional Encoder Representations from Transformers), TF-IDF (Term Frequency and Inverse Document Frequency) was used. TF-IDF is generally a much more simple approach to text processing and can be better interpreted through visualizations on word-importance. On the other hand, BERT is slower, but uses context rather than single word significance. "Dog bites man" and "Man bites dog" carries the same meaning to TF-IDF, but BERT actually analyzes the word order. BERT has been pretrained to a massive scale, so it is smarter about language whereas TF-IDF has just been trained locally on a dataset taken from Kaggle. After setting up the TF-IDF model, and classifying the 2000+ row web scraped dataset with BERT, the two were compared (figure \ref{fig:bertvtf}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth,height=0.5\linewidth]{Fig/BERTvsTFIDF.png}
+    \caption{BERT Classification vs TF-IDF Classification}
+    \label{fig:bertvtf}
+\end{figure}
+
+Surprisingly, the two models came to the exact same conclusions on all of the headlines in the dataset. There was not a single headline on which the two disagreed. This is likely due to the simplicity of stock-related headlines and, as previous research in the project has suggested, the lack of reliability in headlines with extreme emotional appeal. "BUY NOW" or "BREAKING" are often used to hasten bad decisions by readers. More subdued, professional language is more likely to have legitimate and unbiased information. With full article evaluations, context would be much more important and BERT would be necessary to paint a full picture, but with just headlines, TF-IDF is enough
+\subsection{Discussion: Misinformation Presence in High Volatility Events}
+
+Misinformation made up 44\% of each high volatility events news articles and while it's not zero, it's difficult to make a conclusion that misinformation was the direct cause. We feel that more data would be necessary to make an accurate conclusion as to whether misinformation plays a recurring role in the stock market. Based on these results, it seems like misinformation plays a large role in only a handful of events while in others not so much. 
+
+\subsection{Discussion: Extracting Useful Data}
+
+The misinformation label gained by our BERT model did not end up being a strong predictor with our current methodology in place. There is a hint that misinformation detection could be used to aid in predicting volatile stock market events, and potentially protecting traders while lowering risk. But, we believe we would need much more data. Obstacles we faced when obtaining meaningful results through our analysis will be discussed further below in section 3 Challenges. Obstacles that are commonly encountered in everyday work, such as accessing samples of data within a range of dates falling within however many other criteria.
+
+\subsection{Discussion: Predictive Modeling with Logistic Regression and Decision Trees}
+
+Another important aspect of this project involved experimenting with logistic regression and decision tree models to evaluate the potential relationship between misinformation and stock market volatility. These models were built using headline-level misinformation labels as a predictor for volatility events. While both models provided interpretable results, their predictive performance was limited by the small sample size and the relatively weak correlation between the misinformation label and actual market volatility (correlation $\approx 0.19$). Logistic regression offered a probabilistic view, but failed to find a statistically significant relationship, while the decision tree model tended to overfit due to the narrow and imbalanced dataset. However, these models were still useful in highlighting patterns---such as a slight increase in volatility likelihood when multiple misinformed headlines clustered around the same event. With a more diverse and expansive dataset, these approaches could be revisited and potentially refined into more robust volatility predictors that incorporate not just headline misinformation, but also source credibility, time-based patterns, and engagement metrics.
+
+\subsection{Discussion: Challenges and Future Research}
+The intention of this research began with a goal to develop a classification model for misinformation and a predictive model to analyze stock event volatility using this new misinformation (or accurate) label, along with additional metrics such as sentiment and changes in price over stock events. Due to limited web scraping ability and data collected, along with a lack of diversity/range in our initial dataset, we were not able to build a sophisticated model capable of producing results of significance. A correlation of about 0.19 was found between our misinformation label and volatility columns, not allowing us to gather enough information or allow a model to be trained with a goal of predicting volatility using this label. However, given we collect more data we see the possibility of our goals being realized. 
+\\\\
+Another thing that is quite important to consider is sample sizes of each portion of data, and the size of window for each volatile stock market event. We had used a 30-day rolling window for each stock in order to find the most volatile events on average (across the last 10 years). We don't believe that we are currently capturing the full picture with the 30-day window size and future research could potentially be done analyzing the most realistic and accurate window size regarding how long news or other media may be influencing a stock market events behavior. Especially those records with a label indicating they may be misinformation related.
+\\\\
+We had found a median value of 44\% for misinformation prevalence within our stock event data, indicating that misinformation may be involved in a significant portion of these events. But, we can't confidently conclude whether disinformation had actually influenced these events with our current data and analysis. It is important to note that we had only gathered at most 10 (<=10) articles for each volatile event in our final dataset that merged both media data and stock market data. This method only garnered us a final dataset of about 2200 records with much too uniform of data distribution to extract meaningful conclusions from. Despite these obstacles to our current methodology, our exploratory analysis does suggest that misinformation could influence these events because of the sheer amount of data being classified as both highly volatile and disinformation. Hopefully future research can aid in this conclusion or the inverse. 
+\\\\
+Probably the most important factor to consider in future research would be the temporal granularity. Our current method views all articles as equal in importance, but with more of a focus on \textit{when}, more or less, misinformation related to a stock market event occurs. Implementing more precise time-based analysis could offer much more insight into how market behavior reflects this potentially illegitimate news and whether or misinformation detection could aid in protecting traders from deceitful information in this digital age.
+
+\section{Conclusion}
+
+Based on the prevalence of misinformation in stock market events, we believe that while misinformation does influence stock market volatility in certain cases, these cases are not common based on our data. This was demonstrated by how stock market volatility events where misinformation made up 100\% of the articles we gathered were considered outliers and were not representative of the data. This was also supported by the fact that the misinformation category was not an excellent predictor of high-volatility events due to its lack of presence. However, despite these results, we would strongly suggest more research be performed in this area as our dataset is limited in the number of articles we gathered as well as the number of high volatility events we chose to highlight.   
+\\\\
+Additionally, our exploratory predictive models using logistic regression and decision trees did not yield strong predictive power, likely due to the small dataset and weak correlation between misinformation and volatility. However, these methods showed some potential in identifying subtle patterns that could be refined with a larger and more diverse dataset, suggesting a promising direction for future work.
+
+
+
+\clearpage
+
+\makebox[\linewidth]{\rule{20cm}{0.4pt}}
+\textbf{Our Git hub repository:} \href{https://github.com/gcarrera109/DAT490Project/tree/main}{Click Here!}
+
+\bibliographystyle{abbrv}
+\bibliography{refs}
+
+\end{document}
